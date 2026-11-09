@@ -35,21 +35,30 @@ This system moves beyond basic accuracy metrics to focus on **Business Value (Re
 
 ## 🧠 The Machine Learning Pipeline
 
-1. **Data Preprocessing:** * Segregated numerical features for standardization (`StandardScaler`).
-   * Processed categorical text features using `OneHotEncoder` to prevent mathematical hierarchy assumptions.
-   * Combined into a single, cohesive `Pipeline` to prevent data leakage during cross-validation.
-2. **Model Selection:** * Evaluated Logistic Regression vs. Random Forest. 
-   * Logistic Regression was selected due to its superior **Recall** on the minority class (actual defaults) and its inherent explainability through coefficient weights.
-   | Model (test set: 200 applicants, 60 defaults) | Recall on defaults | Precision | Accuracy |
-   |---|---|---|---|
-   | **Logistic Regression** (selected) | **80%** (48 of 60) | 56% | 75% |
-   | Random Forest | 43% (26 of 60) | 70% | 78% |
+1. **Data preprocessing**
+   * Numeric features are standardised with `StandardScaler`.
+   * Categorical features are one-hot encoded with `OneHotEncoder`, so the model doesn't assume an order between categories.
+   * Both steps are combined in a single `Pipeline` fitted on training data only, to prevent data leakage.
 
-   Random Forest had higher accuracy, but it missed more than half of the real defaults. Logistic Regression catches 80% of them at the cost of more applications sent for manual review.
-3. **Feature Importance Insights:**
-   * **Highest Risk Factors:** Being a foreign worker, renting housing, and requesting education-specific loans.
-   * **Lowest Risk Factors:** Having existing credit lines at other institutions (proven track record) and operating without a standard checking account (relying on savings).
+2. **Model selection**
+   * Compared Logistic Regression and Random Forest, both with balanced class weights.
+   * Logistic Regression was selected for its much higher **recall** on actual defaults and for its explainability through coefficient weights.
+
+3. **Feature importance insights**
+   * **Highest risk factors:** being a foreign worker, renting housing, and requesting education-specific loans.
+   * **Lowest risk factors:** having existing credit lines at other institutions (a proven track record) and having no standard checking account (relying on savings).
    * **Fairness note:** the German Credit dataset includes sensitive attributes such as foreign-worker status and personal status. A production system should remove or audit these features to avoid discriminating against protected groups.
+
+## 📊 Results
+
+Test set: 200 applicants, 60 of whom defaulted.
+
+| Model | Recall on defaults | Precision | Accuracy |
+|---|---|---|---|
+| **Logistic Regression** (selected) | **80%** (48 of 60) | 56% | 75% |
+| Random Forest | 43% (26 of 60) | 70% | 78% |
+
+Random Forest had higher accuracy, but it missed more than half of the real defaults. Logistic Regression catches 80% of them, at the cost of more applications sent for manual review. For a bank, a missed default costs far more than an extra review.
 
 <img width="1002" height="590" alt="image" src="https://github.com/user-attachments/assets/aac4732e-20ae-4cd3-a1eb-4fb3d3e01ad4" />
 
