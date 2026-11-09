@@ -40,13 +40,17 @@ This system moves beyond basic accuracy metrics to focus on **Business Value (Re
    * Combined into a single, cohesive `Pipeline` to prevent data leakage during cross-validation.
 2. **Model Selection:** * Evaluated Logistic Regression vs. Random Forest. 
    * Logistic Regression was selected due to its superior **Recall** on the minority class (actual defaults) and its inherent explainability through coefficient weights.
+   | Model (test set: 200 applicants, 60 defaults) | Recall on defaults | Precision | Accuracy |
+   |---|---|---|---|
+   | **Logistic Regression** (selected) | **80%** (48 of 60) | 56% | 75% |
+   | Random Forest | 43% (26 of 60) | 70% | 78% |
+
+   Random Forest had higher accuracy, but it missed more than half of the real defaults. Logistic Regression catches 80% of them at the cost of more applications sent for manual review.
 3. **Feature Importance Insights:**
    * **Highest Risk Factors:** Being a foreign worker, renting housing, and requesting education-specific loans.
    * **Lowest Risk Factors:** Having existing credit lines at other institutions (proven track record) and operating without a standard checking account (relying on savings).
+   * **Fairness note:** the German Credit dataset includes sensitive attributes such as foreign-worker status and personal status. A production system should remove or audit these features to avoid discriminating against protected groups.
 
 <img width="1002" height="590" alt="image" src="https://github.com/user-attachments/assets/aac4732e-20ae-4cd3-a1eb-4fb3d3e01ad4" />
 
 ***
-
-📝 License
-This project is licensed under the MIT License.
